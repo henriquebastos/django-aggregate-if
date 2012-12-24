@@ -52,11 +52,9 @@ class SqlSum(SqlAggregate):
     sql_function = 'SUM'
 
 
-class Sum(DjangoAggregate):
-    name = 'Sum'
-
+class Aggregate(DjangoAggregate):
     def __init__(self, lookup, only=None, **extra):
-        super(Sum, self).__init__(lookup, **extra)
+        super(Aggregate, self).__init__(lookup, **extra)
         self.only = only
         self.condition = None
 
@@ -64,5 +62,10 @@ class Sum(DjangoAggregate):
         if self.only:
             self.condition = query.model._default_manager.filter(self.only)
 
-        aggregate = SqlSum(col, source, is_summary, self.condition, **self.extra)
+        aggregate = self.sql_klass(col, source, is_summary, self.condition, **self.extra)
         query.aggregates[alias] = aggregate
+
+
+class Sum(Aggregate):
+    name = 'Sum'
+    sql_klass = SqlSum
