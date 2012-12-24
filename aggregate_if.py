@@ -41,7 +41,13 @@ class SqlAggregate(DjangoSqlAggregate):
         '''
         Return sql for condition.
         '''
-        escape = lambda p: qn(p) if isinstance(p, basestring) else p
+        def escape(value):
+            if isinstance(value, basestring):
+                value = qn(value)
+            if isinstance(value, bool):
+                value = int(value)
+            return value
+
         sql, param = self.condition.query.where.as_sql(qn, connection)
         param = map(escape, param)
 
