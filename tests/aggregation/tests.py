@@ -38,6 +38,9 @@ class BaseAggregateTestCase(TestCase):
         vals = Author.objects.filter(age__gt=29).aggregate(Sum("age"))
         self.assertEqual(len(vals), 1)
         self.assertEqual(vals["age__sum"], 254)
+        vals = Author.objects.filter(age__gt=29).aggregate(Sum("age", only=Q(age__lt=29)))
+        # If there are no matching aggregates, then None, not 0 is the answer.
+        self.assertEqual(vals["age__sum"], None)
 
     def test_related_aggregate(self):
         vals = Author.objects.aggregate(Avg("friends__age"))
