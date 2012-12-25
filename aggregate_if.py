@@ -66,6 +66,14 @@ class SqlAvg(SqlAggregate):
     sql_function = 'AVG'
 
 
+class SqlMax(SqlAggregate):
+    sql_function = 'MAX'
+
+
+class SqlMin(SqlAggregate):
+    sql_function = 'MIN'
+
+
 class Aggregate(DjangoAggregate):
     def __init__(self, lookup, only=None, **extra):
         super(Aggregate, self).__init__(lookup, **extra)
@@ -93,3 +101,13 @@ class Count(Aggregate):
 class Avg(Aggregate):
     name = 'Avg'
     sql_klass = SqlAvg
+
+
+class Max(Aggregate):
+    name = 'Max'
+    sql_klass = SqlMax
+
+
+class Min(Aggregate):
+    name = 'Min'
+    sql_klass = SqlMin
