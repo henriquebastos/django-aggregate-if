@@ -31,6 +31,8 @@ class BaseAggregateTestCase(TestCase):
     def test_multiple_aggregates(self):
         vals = Author.objects.aggregate(Sum("age"), Avg("age"))
         self.assertEqual(vals, {"age__sum": 337, "age__avg": Approximate(37.4, places=1)})
+        vals = Author.objects.aggregate(Sum("age", only=Q(age__gt=29)), Avg("age"))
+        self.assertEqual(vals, {"age__sum": 254, "age__avg": Approximate(37.4, places=1)})
 
     def test_filter_aggregate(self):
         vals = Author.objects.filter(age__gt=29).aggregate(Sum("age"))
