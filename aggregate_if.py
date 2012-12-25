@@ -61,6 +61,10 @@ class SqlSum(SqlAggregate):
 class SqlCount(SqlAggregate):
     sql_function = 'COUNT'
 
+class SqlAvg(SqlAggregate):
+    is_computed = True
+    sql_function = 'AVG'
+
 
 class Aggregate(DjangoAggregate):
     def __init__(self, lookup, only=None, **extra):
@@ -84,3 +88,8 @@ class Sum(Aggregate):
 class Count(Aggregate):
     name = 'Count'
     sql_klass = SqlCount
+
+
+class Avg(Aggregate):
+    name = 'Avg'
+    sql_klass = SqlAvg
