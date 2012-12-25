@@ -20,6 +20,13 @@ class BaseAggregateTestCase(TestCase):
     def test_single_aggregate(self):
         vals = Author.objects.aggregate(Avg("age"))
         self.assertEqual(vals, {"age__avg": Approximate(37.4, places=1)})
+        vals = Author.objects.aggregate(Sum("age", only=Q(age__gt=29)))
+        self.assertEqual(vals, {"age__sum": 254})
+        vals = Author.objects.extra(select={'testparams':'age < %s'}, select_params=[0])\
+               .aggregate(Sum("age", only=Q(age__gt=29)))
+        self.assertEqual(vals, {"age__sum": 254})
+        vals = Author.objects.aggregate(Sum("age", only=Q(name__icontains='jaco')|Q(name__icontains='adrian')))
+        self.assertEqual(vals, {"age__sum": 69})
 
     def test_multiple_aggregates(self):
         vals = Author.objects.aggregate(Sum("age"), Avg("age"))
