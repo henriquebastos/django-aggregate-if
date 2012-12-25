@@ -84,6 +84,10 @@ class BaseAggregateTestCase(TestCase):
         self.assertEqual(len(vals), 1)
         self.assertEqual(vals["books__authors__age__max"], 57)
 
+        vals = Store.objects.aggregate(Max("books__authors__age", only=Q(books__authors__age__lt=56)))
+        self.assertEqual(len(vals), 1)
+        self.assertEqual(vals["books__authors__age__max"], 46)
+
         vals = Author.objects.aggregate(Min("book__publisher__num_awards"))
         self.assertEqual(len(vals), 1)
         self.assertEqual(vals["book__publisher__num_awards__min"], 1)
