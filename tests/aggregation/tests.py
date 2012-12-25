@@ -3,10 +3,10 @@ from __future__ import absolute_import
 import datetime
 from decimal import Decimal
 
-from django.db.models import Q, F, Max, Min
+from django.db.models import Q, F
 from django.test import TestCase, Approximate
 
-from aggregate_if import Sum, Count, Avg
+from aggregate_if import Sum, Count, Avg, Max, Min
 
 from .models import Author, Publisher, Book, Store
 
