@@ -47,6 +47,22 @@ class BaseAggregateTestCase(TestCase):
         self.assertEqual(len(vals), 1)
         self.assertAlmostEqual(vals["friends__age__avg"], 34.07, places=2)
 
+        vals = Author.objects.aggregate(Avg("friends__age", only=Q(age__lt=29)))
+        self.assertEqual(len(vals), 1)
+        self.assertAlmostEqual(vals["friends__age__avg"], 33.67, places=2)
+        vals2 = Author.objects.filter(age__lt=29).aggregate(Avg("friends__age"))
+        self.assertEqual(vals, vals2)
+
+        vals = Author.objects.aggregate(Avg("friends__age", only=Q(friends__age__lt=35)))
+        self.assertEqual(len(vals), 1)
+        self.assertAlmostEqual(vals["friends__age__avg"], 28.75, places=2)
+
+        # The average age of author's friends, whose age is lower than the authors age.
+        vals = Author.objects.aggregate(Avg("friends__age", only=Q(friends__age__lt=F('age'))))
+        self.assertEqual(len(vals), 1)
+        self.assertAlmostEqual(vals["friends__age__avg"], 30.43, places=2)
+
+
         vals = Book.objects.filter(rating__lt=4.5).aggregate(Avg("authors__age"))
         self.assertEqual(len(vals), 1)
         self.assertAlmostEqual(vals["authors__age__avg"], 38.2857, places=2)
