@@ -59,7 +59,14 @@ class SqlSum(SqlAggregate):
 
 
 class SqlCount(SqlAggregate):
+    is_ordinal = True
     sql_function = 'COUNT'
+    sql_template = '%(function)s(%(distinct)s%(field)s)'
+    conditional_template = '%(function)s(%(distinct)sCASE WHEN %(condition)s THEN %(field)s ELSE null END)'
+
+    def __init__(self, col, distinct=False, **extra):
+        super(SqlCount, self).__init__(col, distinct=distinct and 'DISTINCT ' or '', **extra)
+
 
 class SqlAvg(SqlAggregate):
     is_computed = True
@@ -84,7 +91,7 @@ class Aggregate(DjangoAggregate):
         if self.only:
             self.condition = query.model._default_manager.filter(self.only)
 
-        aggregate = self.sql_klass(col, source, is_summary, self.condition, **self.extra)
+        aggregate = self.sql_klass(col, source=source, is_summary=is_summary, condition=self.condition, **self.extra)
         query.aggregates[alias] = aggregate
 
 
