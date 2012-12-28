@@ -83,7 +83,7 @@ There is a `ticket 11305`_ that will (*hopefully*) implement this feature into
 Django 1.6.
 
 Using Django 1.4, I still wanted to avoid creating custom queries for very simple
-conditional aggregations. So I've chery picked those ideas and others from the
+conditional aggregations. So I've cherry picked those ideas and others from the
 internet and built this library.
 
 This library uses the same API and tests proposed on `ticket 11305`_, so when the
