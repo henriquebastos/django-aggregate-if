@@ -39,10 +39,9 @@ def parse_args():
     options.database = DATABASES[options.database]
 
     # Build labels
+    labels = ['aggregation']
     if args:
         labels = ["aggregation.%s" % label for label in args]
-    else:
-        labels = ['aggregation']
 
     return options, labels
 
