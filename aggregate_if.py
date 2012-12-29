@@ -43,7 +43,11 @@ class SqlAggregate(DjangoSqlAggregate):
         '''
         def escape(value):
             if isinstance(value, basestring):
-                value = qn(value)
+                # Escape params used with LIKE
+                if '%' in value:
+                    value = value.replace('%', '%%')
+                # Add single quote to text values
+                value = "'" + value + "'"
             if isinstance(value, bool):
                 value = int(value)
             return value
