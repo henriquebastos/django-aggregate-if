@@ -4,9 +4,39 @@ import sys
 from optparse import OptionParser
 
 
+DATABASES = {
+    'sqlite': {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    },
+    'postgres': {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'aggregation',
+        }
+    },
+    'mysql': {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'aggregation',
+        }
+    },
+}
+
 def parse_args():
     parser = OptionParser()
+    parser.add_option('-d', '--database', choices=DATABASES.keys(),
+                      help='Choose: sqlite, postgresql or mysql')
     options, args = parser.parse_args()
+
+    if not options.database:
+        parser.print_help()
+        sys.exit(1)
+
+    # Choose database dictionary
+    options.database = DATABASES[options.database]
 
     # Build labels
     if args:
@@ -24,12 +54,7 @@ def configure_settings(options):
     # configured by it. Otherwise it will use the parameters bellow.
     if not settings.configured:
         params = dict(
-            DATABASES={
-                'default': {
-                    'ENGINE': 'django.db.backends.sqlite3',
-                    'NAME': ':memory:',
-                }
-            },
+            DATABASES=options.database,
             INSTALLED_APPS = (
                 'tests.aggregation',
             ),
