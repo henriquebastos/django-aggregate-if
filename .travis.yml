@@ -2,4 +2,16 @@ language: python
 python:
   - "2.6"
   - "2.7"
-script: ./runtests.py
+env:
+  - DJANGO=1.4.3 DB=sqlite
+  - DJANGO=1.4.3 DB=mysql
+  - DJANGO=1.4.3 DB=postgres
+before_script:
+  - mysql -e 'create database aggregation;'
+  - psql -c 'create database aggregation;' -U postgres
+install:
+  - pip install mysql-python
+  - pip install psycopg2
+  - pip install -q Django==$DJANGO --use-mirrors
+script:
+  - ./runtests.py -d $DB
