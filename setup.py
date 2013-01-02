@@ -6,7 +6,7 @@ import os
 setup(name='django-aggregate-if',
       version='0.2',
       description='Conditional aggregates for Django, just like the famous SumIf in Excel.',
-      long_description=open(os.path.join(os.path.dirname(__file__), "README.txt")).read(),
+      long_description=open(os.path.join(os.path.dirname(__file__), "README.rst")).read(),
       author="Henrique Bastos", author_email="henrique@bastos.net",
       license="MIT",
       py_modules=['aggregate_if'],
