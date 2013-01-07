@@ -42,14 +42,14 @@ class SqlAggregate(DjangoSqlAggregate):
         Return sql for condition.
         '''
         def escape(value):
+            if isinstance(value, bool):
+                value = str(int(value))
             if isinstance(value, basestring):
                 # Escape params used with LIKE
                 if '%' in value:
                     value = value.replace('%', '%%')
                 # Add single quote to text values
                 value = "'" + value + "'"
-            if isinstance(value, bool):
-                value = int(value)
             return value
 
         sql, param = self.condition.query.where.as_sql(qn, connection)
