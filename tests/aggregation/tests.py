@@ -17,6 +17,10 @@ class BaseAggregateTestCase(TestCase):
     def test_empty_aggregate(self):
         self.assertEqual(Author.objects.all().aggregate(), {})
 
+    def test_quote_escape(self):
+        vals = Author.objects.all().aggregate(Count("id", only=Q(name="nobody'")))
+        self.assertEqual(vals['id__count'], 0)
+
     def test_single_aggregate(self):
         vals = Author.objects.aggregate(Avg("age"))
         self.assertEqual(vals, {"age__avg": Approximate(37.4, places=1)})

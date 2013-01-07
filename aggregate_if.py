@@ -46,6 +46,9 @@ class SqlAggregate(DjangoSqlAggregate):
                 # Escape params used with LIKE
                 if '%' in value:
                     value = value.replace('%', '%%')
+                # Escape single quotes
+                if "'" in value:
+                    value = value.replace("'", "''")
                 # Add single quote to text values
                 value = "'" + value + "'"
             if isinstance(value, bool):
