@@ -42,6 +42,11 @@ class BaseAggregateTestCase(TestCase):
         # If there are no matching aggregates, then None, not 0 is the answer.
         self.assertEqual(vals["age__sum"], None)
 
+    def test_condition_with_bool_value(self):
+        vals = Store.objects.all().aggregate(with_coffee=Count("books", only=Q(has_coffee=True)))
+        self.assertEqual(len(vals), 1)
+        self.assertEqual(vals["with_coffee"], 3)
+
     def test_related_aggregate(self):
         vals = Author.objects.aggregate(Avg("friends__age"))
         self.assertEqual(len(vals), 1)
