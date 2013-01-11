@@ -156,7 +156,8 @@
             "books": [3, 4, 6],
             "name": "Mamma and Pappa's Books",
             "original_opening": "1945-4-25 16:24:14",
-            "friday_night_closing": "21:30:00"
+            "friday_night_closing": "21:30:00",
+            "has_coffee": true
         }
     },
     {

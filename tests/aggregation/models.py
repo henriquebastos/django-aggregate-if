@@ -36,6 +36,7 @@ class Store(models.Model):
     books = models.ManyToManyField(Book)
     original_opening = models.DateTimeField()
     friday_night_closing = models.TimeField()
+    has_coffee = models.BooleanField()
 
     def __unicode__(self):
         return self.name
