@@ -23,7 +23,10 @@ class SqlAggregate(DjangoSqlAggregate):
     def relabel_aliases(self, change_map):
         super(SqlAggregate, self).relabel_aliases(change_map)
         if self.has_condition:
-            self.condition.relabel_aliases(change_map)
+            condition_change_map = dict((k, v) for k, v in \
+                change_map.iteritems() if k in self.condition.query.alias_map
+            )
+            self.condition.query.change_aliases(condition_change_map)
 
     def as_sql(self, qn, connection):
         if self.has_condition:
