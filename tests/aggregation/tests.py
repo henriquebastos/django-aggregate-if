@@ -132,25 +132,33 @@ class BaseAggregateTestCase(TestCase):
         publishers = Publisher.objects.annotate(avg_rating=Avg(F('book__rating') - 0))
         publishers = publishers.values_list('id', 'avg_rating').order_by('id')
         self.assertEqual(list(publishers), [(1, 4.25), (2, 3.0), (3, 4.0), (4, 5.0), (5, None)])
+    '''
 
-    def test_only_condition_with_join(self):
+    def test_only_condition_with_remote_fk_join(self):
+        publishers = Publisher.objects.annotate(mean_price=Avg('book__price', only=Q(book__price__gte=30)),
+                                                mean_rating=Avg('book__rating', only=Q(book__price__gte=0)))
+        p = publishers.get(pk=1)
+        self.assertEqual(p.mean_price, 30.0)
+        self.assertEqual(p.mean_rating, 4.25)
+    '''
+    def test_only_condition_with_m2m_join(self):
         # Test extra-select
-        books = Book.objects.annotate(mean_age=Avg("authors__age"))
-        books = books.annotate(mean_age2=Avg('authors__age', only=Q(authors__age__gte=0)))
+        books = Book.objects.annotate(mean_age=Avg("authors__age", only=Q(authors__age__gte=2)), 
+                                      mean_age2=Avg('authors__age', only=Q(authors__age__gte=0)))
         books = books.extra(select={'testparams': 'publisher_id = %s'}, select_params=[1])
         b = books.get(pk=1)
         self.assertEqual(b.mean_age, 34.5)
         self.assertEqual(b.mean_age2, 34.5)
         self.assertEqual(b.testparams, True)
-
+    '''
     def test_relabel_aliases(self):
         # Test relabel_aliases
-        excluded_authors = Author.objects.annotate(book_rating=Min(F('book__rating') + 5, only=Q(pk__gte=1)))
+        excluded_authors = Author.objects.annotate(book_rating=Min('book__rating', only=Q(pk__gte=1)))
         excluded_authors = excluded_authors.filter(book_rating__lt=0)
-        books = books.exclude(authors__in=excluded_authors)
+        books = Book.objects.exclude(authors__in=excluded_authors).annotate(mean_age=Avg('authors__age'))
         b = books.get(pk=1)
         self.assertEqual(b.mean_age, 34.5)
-
+    '''
     def test_joins_in_f(self):
         # Test joins in F-based annotation
         books = Book.objects.annotate(oldest=Max(F('authors__age')))
