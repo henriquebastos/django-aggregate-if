@@ -97,10 +97,19 @@ class Aggregate(DjangoAggregate):
         self.only = only
         self.condition = None
 
+    def _get_fields_from_Q(self, q):
+        fields = []
+        for child in q.children:
+            if hasattr(child, 'children'):
+                fields.extend(self._get_fields_from_Q(child))
+            else:
+                fields.append(child)
+        return fields
+
     def add_to_query(self, query, alias, col, source, is_summary):
         if self.only:
             self.condition = query.model._default_manager.filter(self.only)
-            for child in self.only.children:
+            for child in self._get_fields_from_Q(self.only):
                 field_list = child[0].split('__')
                 # Pop off the last field if it's a query term ('gte', 'contains', 'isnull', etc.)
                 if field_list[-1] in query.query_terms:
