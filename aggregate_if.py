@@ -100,6 +100,13 @@ class Aggregate(DjangoAggregate):
     def add_to_query(self, query, alias, col, source, is_summary):
         if self.only:
             self.condition = query.model._default_manager.filter(self.only)
+            for child in self.only.children:
+                field_list = child[0].split('__')
+                # Pop off the last field if it's a query term ('gte', 'contains', 'isnull', etc.)
+                if field_list[-1] in query.query_terms:
+                    field_list.pop()
+                _, _, _, join_list, _, _ = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), False)
+                query.promote_joins(join_list, True)
 
         aggregate = self.sql_klass(col, source=source, is_summary=is_summary, condition=self.condition, **self.extra)
         query.aggregates[alias] = aggregate
