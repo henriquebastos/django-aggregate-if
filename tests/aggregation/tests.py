@@ -652,7 +652,7 @@ class BaseAggregateTestCase(TestCase):
         )
 
     def test_only_requires_extra_join(self):
-        publishers = Publisher.objects.annotate(jeff_books=Count('book', only=Q(book__contact__name__icontains='Jeff')))
+        publishers = Publisher.objects.annotate(jeff_books=Count('book', only=Q(book__contact__name__icontains='Jeff'))).order_by('id')
         self.assertQuerysetEqual(
             publishers, [
                 ('Apress', 0),
