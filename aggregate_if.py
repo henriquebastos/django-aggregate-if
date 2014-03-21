@@ -115,7 +115,12 @@ class Aggregate(DjangoAggregate):
                 if field_list[-1] in query.query_terms:
                     field_list.pop()
                 _, _, _, join_list, _, _ = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), False)
-                query.promote_joins(join_list, True)
+                # Django 1.5+
+                if hasattr(query, 'promote_joins'):
+                    query.promote_joins(join_list, True)
+                # Django < 1.5
+                elif hasattr(query, 'promote_alias_chain'):
+                    query.promote_alias_chain(join_list, True)
 
         aggregate = self.sql_klass(col, source=source, is_summary=is_summary, condition=self.condition, **self.extra)
         query.aggregates[alias] = aggregate
