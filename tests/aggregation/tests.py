@@ -650,3 +650,31 @@ class BaseAggregateTestCase(TestCase):
                 (Decimal('82.8'), 1),
             ]
         )
+
+    def test_only_requires_extra_join(self):
+        publishers = Publisher.objects.annotate(jeff_books=Count('book', only=Q(book__contact__name__icontains='Jeff'))).order_by('id')
+        self.assertQuerysetEqual(
+            publishers, [
+                ('Apress', 0),
+                ('Sams', 0),
+                ('Prentice Hall', 1),
+                ('Morgan Kaufmann', 0),
+                ('Jonno\'s House of Books', 0)
+            ],
+            lambda b: (b.name, b.jeff_books),
+        )
+
+        # Test with compound Q object
+        # Get publishers annotated with a count of books that are in stores with coffee or named Books.com
+        q = Q(book__store__has_coffee=True) | Q(book__store__name__icontains="Books.com")
+        publishers = Publisher.objects.annotate(coffee_books=Count('book', distinct=True, only=q))
+        self.assertQuerysetEqual(
+            publishers, [
+                ('Apress', 2),
+                ('Sams', 0),
+                ('Prentice Hall', 2),
+                ('Morgan Kaufmann', 1),
+                ('Jonno\'s House of Books', 0)
+            ],
+            lambda b: (b.name, b.coffee_books),
+        )

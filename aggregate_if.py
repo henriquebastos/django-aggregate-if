@@ -97,9 +97,30 @@ class Aggregate(DjangoAggregate):
         self.only = only
         self.condition = None
 
+    def _get_fields_from_Q(self, q):
+        fields = []
+        for child in q.children:
+            if hasattr(child, 'children'):
+                fields.extend(self._get_fields_from_Q(child))
+            else:
+                fields.append(child)
+        return fields
+
     def add_to_query(self, query, alias, col, source, is_summary):
         if self.only:
             self.condition = query.model._default_manager.filter(self.only)
+            for child in self._get_fields_from_Q(self.only):
+                field_list = child[0].split('__')
+                # Pop off the last field if it's a query term ('gte', 'contains', 'isnull', etc.)
+                if field_list[-1] in query.query_terms:
+                    field_list.pop()
+                _, _, _, join_list, _, _ = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), False)
+                # Django 1.5+
+                if hasattr(query, 'promote_joins'):
+                    query.promote_joins(join_list, True)
+                # Django < 1.5
+                elif hasattr(query, 'promote_alias_chain'):
+                    query.promote_alias_chain(join_list, True)
 
         aggregate = self.sql_klass(col, source=source, is_summary=is_summary, condition=self.condition, **self.extra)
         query.aggregates[alias] = aggregate
