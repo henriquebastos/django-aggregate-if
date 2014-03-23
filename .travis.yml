@@ -14,12 +14,12 @@ env:
   - DJANGO=1.6 DB=sqlite
   - DJANGO=1.6 DB=mysql
   - DJANGO=1.6 DB=postgres
-matrix:
-  include:
-    - python: 3.3
-      env: DJANGO=1.6 DB=sqlite
-    - python: 3.3
-      env: DJANGO=1.6 DB=postgres
+#matrix:
+#  include:
+#    - python: 3.3
+#      env: DJANGO=1.6 DB=sqlite
+#    - python: 3.3
+#      env: DJANGO=1.6 DB=postgres
 
 before_script:
   - mysql -e 'create database aggregation;'
