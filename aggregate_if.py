@@ -116,7 +116,9 @@ class Aggregate(DjangoAggregate):
                 # Pop off the last field if it's a query term ('gte', 'contains', 'isnull', etc.)
                 if field_list[-1] in query.query_terms:
                     field_list.pop()
-                _, _, _, join_list, _, _ = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), False)
+                # setup_joins have different returns in Django 1.5 and 1.6, but the order of what we need remains.
+                result = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), None)
+                join_list = result[3]
                 # Django 1.5+
                 if hasattr(query, 'promote_joins'):
                     query.promote_joins(join_list, True)
