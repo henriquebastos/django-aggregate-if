@@ -1,26 +1,20 @@
 language: python
-python:
-  - "2.7"
-  - "3.4"
 services:
   - mysql
   - postgresql
 env:
-  - DJANGO=1.4 DB=sqlite
-  - DJANGO=1.4 DB=mysql
-  - DJANGO=1.4 DB=postgres
-  - DJANGO=1.5 DB=sqlite
-  - DJANGO=1.5 DB=mysql
-  - DJANGO=1.5 DB=postgres
-  - DJANGO=1.6 DB=sqlite
-  - DJANGO=1.6 DB=mysql
-  - DJANGO=1.6 DB=postgres
-before_script:
-  - mysql -e 'create database aggregation;'
-  - psql -c 'create database aggregation;' -U postgres
+  - TOXENV=py27-django1.4-sqlite
+  - TOXENV=py27-django1.4-postgres
+  - TOXENV=py27-django1.4-mysql
+  - TOXENV=py27-django1.5-sqlite
+  - TOXENV=py27-django1.5-postgres
+  - TOXENV=py27-django1.5-mysql
+  - TOXENV=py27-django1.6-sqlite
+  - TOXENV=py27-django1.6-postgres
+  - TOXENV=py27-django1.6-mysql
+  - TOXENV=py34-django1.6-sqlite
+  - TOXENV=py34-django1.6-postgres
 install:
-  - pip install mysql-python
-  - pip install psycopg2
-  - pip install -q Django==$DJANGO --use-mirrors
+  - pip install tox
 script:
-  - ./runtests.py -d $DB
+  - tox -e $TOXENV
