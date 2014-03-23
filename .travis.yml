@@ -1,11 +1,20 @@
 language: python
 python:
-  - "2.6"
   - "2.7"
+  - "3.4"
+services:
+  - mysql
+  - postgresql
 env:
-  - DJANGO=1.4.3 DB=sqlite
-  - DJANGO=1.4.3 DB=mysql
-  - DJANGO=1.4.3 DB=postgres
+  - DJANGO=1.4 DB=sqlite
+  - DJANGO=1.4 DB=mysql
+  - DJANGO=1.4 DB=postgres
+  - DJANGO=1.5 DB=sqlite
+  - DJANGO=1.5 DB=mysql
+  - DJANGO=1.5 DB=postgres
+  - DJANGO=1.6 DB=sqlite
+  - DJANGO=1.6 DB=mysql
+  - DJANGO=1.6 DB=postgres
 before_script:
   - mysql -e 'create database aggregation;'
   - psql -c 'create database aggregation;' -U postgres
