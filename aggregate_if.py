@@ -9,6 +9,8 @@ This code was based on the work of others found on the internet:
 3. https://groups.google.com/forum/?fromgroups=#!topic/django-users/cjzloTUwmS0
 4. https://groups.google.com/forum/?fromgroups=#!topic/django-users/vVprMpsAnPo
 '''
+from __future__ import unicode_literals
+import six
 from django.db.models.aggregates import Aggregate as DjangoAggregate
 from django.db.models.sql.aggregates import Aggregate as DjangoSqlAggregate
 
@@ -47,7 +49,7 @@ class SqlAggregate(DjangoSqlAggregate):
         def escape(value):
             if isinstance(value, bool):
                 value = str(int(value))
-            if isinstance(value, basestring):
+            if isinstance(value, six.string_types):
                 # Escape params used with LIKE
                 if '%' in value:
                     value = value.replace('%', '%%')
