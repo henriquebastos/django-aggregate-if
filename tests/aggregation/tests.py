@@ -667,7 +667,7 @@ class BaseAggregateTestCase(TestCase):
         # Test with compound Q object
         # Get publishers annotated with a count of books that are in stores with coffee or named Books.com
         q = Q(book__store__has_coffee=True) | Q(book__store__name__icontains="Books.com")
-        publishers = Publisher.objects.annotate(coffee_books=Count('book', distinct=True, only=q))
+        publishers = Publisher.objects.annotate(coffee_books=Count('book', distinct=True, only=q)).order_by('id')
         self.assertQuerysetEqual(
             publishers, [
                 ('Apress', 2),
