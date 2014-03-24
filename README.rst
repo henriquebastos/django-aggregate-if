@@ -94,10 +94,10 @@ To install it, simply:
 Inspiration
 -----------
 
-There is a `ticket 11305`_ that will (*hopefully*) implement this feature into
-Django 1.6.
+There is a 5 years old `ticket 11305`_ that will (*hopefully*) implement this feature into
+Django 1.8.
 
-Using Django 1.4, I still wanted to avoid creating custom queries for very simple
+Using Django 1.6, I still wanted to avoid creating custom queries for very simple
 conditional aggregations. So I've cherry picked those ideas and others from the
 internet and built this library.
 
