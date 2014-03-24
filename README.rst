@@ -2,7 +2,20 @@ Django Aggregate If: Condition aggregates for Django
 ====================================================
 
 .. image:: https://travis-ci.org/henriquebastos/django-aggregate-if.png?branch=master
-        :target: https://travis-ci.org/henriquebastos/django-aggregate-if
+    :target: https://travis-ci.org/henriquebastos/django-aggregate-if
+    :alt: Test Status
+
+.. image:: https://landscape.io/github/henriquebastos/django-aggregate-if/master/landscape.png
+    :target: https://landscape.io/github/henriquebastos/django-aggregate-if/master
+    :alt: Code Helth
+
+.. image:: https://pypip.in/v/django-aggregate-if/badge.png
+    :target: https://crate.io/packages/django-aggregate-if/
+    :alt: Latest PyPI version
+
+.. image:: https://pypip.in/d/django-aggregate-if/badge.png
+    :target: https://crate.io/packages/django-aggregate-if/
+    :alt: Number of PyPI downloads
 
 *Aggregate-if* adds conditional aggregates to Django.
 
