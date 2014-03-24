@@ -83,7 +83,9 @@ With conditional aggregates you can get it all with only **1 query**:
 Installation
 ------------
 
-To install django-aggregate-if, simply:
+*Aggregate-if* works with Django 1.4, 1.5 and 1.6.
+
+To install it, simply:
 
 .. code-block:: bash
 
@@ -107,6 +109,27 @@ Limitations
 
 Conditions involving joins with aliases are not supported yet. If you want to
 help adding this feature, you're welcome to check the `first issue`_.
+
+Changelog
+---------
+
+0.4
+    - Use tox to run tests.
+    - Add support for Django 1.6.
+    - Add support for Python3.
+    - The ``only`` parameter now freely supports joins independent of the main query.
+    - Adds support for alias relabeling permitting excludes and updates with aggregates filtered on remote foreign key relations.
+
+0.3.1
+    - Fix quotation escaping.
+    - Fix boolean casts on Postgres.
+
+0.2
+    - Fix postgres issue with LIKE conditions.
+
+0.1
+    - Initial release.
+
 
 License
 =======
