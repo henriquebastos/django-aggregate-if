@@ -110,6 +110,14 @@ Limitations
 Conditions involving joins with aliases are not supported yet. If you want to
 help adding this feature, you're welcome to check the `first issue`_.
 
+Contributors
+------------
+
+* `Henrique Bastos <http://github.com/henriquebastos>`_
+* `Iuri de Silvio <https://github.com/iurisilvio>`_
+* `Hampus Stjernhav <https://github.com/champ>`_
+* `Bradley Martsberger <https://github.com/martsberger>`_
+
 Changelog
 ---------
 
