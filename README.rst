@@ -70,14 +70,14 @@ With conditional aggregates you can get it all with only **1 query**:
     from aggregate_if import Count, Sum
 
     Offer.objects.aggregate(
-        Count('pk'),
-        Count('pk', only=Q(status=Offer.OPEN)),
-        Count('pk', only=Q(status=Offer.REVOKED)),
-        Count('pk', only=Q(status=Offer.PAID)),
-        Sum('price'),
-        Sum('price', only=Q(status=Offer.OPEN)),
-        Sum('price'), only=Q(status=Offer.REVOKED)),
-        Sum('price'), Q(status=Offer.PAID)),
+        pk__count=Count('pk'),
+        pk__open__count=Count('pk', only=Q(status=Offer.OPEN)),
+        pk__revoked__count=Count('pk', only=Q(status=Offer.REVOKED)),
+        pk__paid__count=Count('pk', only=Q(status=Offer.PAID)),
+        pk__sum=Sum('price'),
+        pk__open__sum=Sum('price', only=Q(status=Offer.OPEN)),
+        pk__revoked__sum=Sum('price'), only=Q(status=Offer.REVOKED)),
+        pk__paid__sum=Sum('price'), only=Q(status=Offer.PAID))
     )
 
 Installation
