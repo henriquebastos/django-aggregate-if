@@ -119,9 +119,13 @@ class Aggregate(DjangoAggregate):
                 # setup_joins have different returns in Django 1.5 and 1.6, but the order of what we need remains.
                 result = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), None)
                 join_list = result[3]
-                # Django 1.5+
+                # Django 1.5-1.7
                 if hasattr(query, 'promote_joins'):
-                    query.promote_joins(join_list, True)
+                    #Django 1.5 and 1.6 accept a True arg for promote_joins. Django1.7 removes it
+                    try:
+                        query.promote_joins(join_list, True)
+                    except TypeError:
+                        query.promote_joins(join_list)
                 # Django < 1.5
                 elif hasattr(query, 'promote_alias_chain'):
                     query.promote_alias_chain(join_list, True)
