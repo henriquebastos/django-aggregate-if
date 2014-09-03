@@ -11,6 +11,7 @@ This code was based on the work of others found on the internet:
 '''
 from __future__ import unicode_literals
 import six
+import django
 from django.db.models.aggregates import Aggregate as DjangoAggregate
 from django.db.models.sql.aggregates import Aggregate as DjangoSqlAggregate
 
@@ -120,7 +121,10 @@ class Aggregate(DjangoAggregate):
                 result = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), None)
                 join_list = result[3]
                 # Django 1.5+
-                if hasattr(query, 'promote_joins'):
+                if django.VERSION[:2] >= (1, 7):
+                    query.promote_joins(join_list)
+                # Django 1.5+
+                elif hasattr(query, 'promote_joins'):
                     query.promote_joins(join_list, True)
                 # Django < 1.5
                 elif hasattr(query, 'promote_alias_chain'):
