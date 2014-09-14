@@ -11,8 +11,12 @@ This code was based on the work of others found on the internet:
 '''
 from __future__ import unicode_literals
 import six
+import django
 from django.db.models.aggregates import Aggregate as DjangoAggregate
 from django.db.models.sql.aggregates import Aggregate as DjangoSqlAggregate
+
+
+VERSION = django.VERSION[:2]
 
 
 class SqlAggregate(DjangoSqlAggregate):
@@ -119,12 +123,12 @@ class Aggregate(DjangoAggregate):
                 # setup_joins have different returns in Django 1.5 and 1.6, but the order of what we need remains.
                 result = query.setup_joins(field_list, query.model._meta, query.get_initial_alias(), None)
                 join_list = result[3]
-                # Django 1.5+
-                if hasattr(query, 'promote_joins'):
-                    query.promote_joins(join_list, True)
-                # Django < 1.5
-                elif hasattr(query, 'promote_alias_chain'):
-                    query.promote_alias_chain(join_list, True)
+
+                fname = 'promote_alias_chain' if VERSION < (1, 5) else 'promote_joins'
+                args = (join_list, True) if VERSION < (1, 7) else (join_list,)
+
+                promote = getattr(query, fname)
+                promote(*args)
 
         aggregate = self.sql_klass(col, source=source, is_summary=is_summary, condition=self.condition, **self.extra)
         query.aggregates[alias] = aggregate
