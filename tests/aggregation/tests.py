@@ -4,7 +4,15 @@ import datetime
 from decimal import Decimal
 
 from django.db.models import Q, F
-from django.test import TestCase, Approximate
+from django.test import TestCase
+
+try:
+    # Django < 1.7
+    from django.test import Approximate
+except ImportError as e:
+    # Django >= 1.7
+    from django.test.utils import Approximate
+
 
 from aggregate_if import Sum, Count, Avg, Max, Min
 
