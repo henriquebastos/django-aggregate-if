@@ -27,8 +27,12 @@ def get_runner(settings_module):
     '''
     os.environ['DJANGO_SETTINGS_MODULE'] = settings_module
 
+    import django
     from django.test.utils import get_runner
     from django.conf import settings
+
+    if hasattr(django, 'setup'):
+        django.setup()
 
     return get_runner(settings)
 
