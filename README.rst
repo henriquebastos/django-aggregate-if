@@ -83,7 +83,7 @@ With conditional aggregates you can get it all with only **1 query**:
 Installation
 ------------
 
-*Aggregate-if* works with Django 1.4, 1.5 and 1.6.
+*Aggregate-if* works with Django 1.4, 1.5, 1.6 and 1.7.
 
 To install it, simply:
 
