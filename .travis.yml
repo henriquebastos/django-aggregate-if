@@ -22,11 +22,21 @@ env:
 matrix:
   exclude:
     - python: 3.4
-      env: DJANGO=1.4
+      env: DJANGO=1.4 DB=sqlite
     - python: 3.4
-      env: DJANGO=1.5
+      env: DJANGO=1.4 DB=mysql
     - python: 3.4
-      env: DB=mysql
+      env: DJANGO=1.4 DB=postgres
+    - python: 3.4
+      env: DJANGO=1.5 DB=sqlite
+    - python: 3.4
+      env: DJANGO=1.5 DB=mysql
+    - python: 3.4
+      env: DJANGO=1.5 DB=postgres
+    - python: 3.4
+      env: DJANGO=1.6 DB=mysql
+    - python: 3.4
+      env: DJANGO=1.7 DB=mysql
 
 before_script:
   - mysql -e 'create database aggregation;'
