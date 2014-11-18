@@ -31,7 +31,7 @@ class SqlAggregate(DjangoSqlAggregate):
             super(SqlAggregate, self).relabel_aliases(change_map)
         if self.has_condition:
             condition_change_map = dict((k, v) for k, v in \
-                change_map.iteritems() if k in self.condition.query.alias_map
+                change_map.items() if k in self.condition.query.alias_map
             )
             self.condition.query.change_aliases(condition_change_map)
 
