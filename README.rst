@@ -127,7 +127,6 @@ Changelog
 ---------
 
 0.5
-
     - Support for Django 1.7
 
 0.4
