@@ -117,9 +117,17 @@ Contributors
 * `Iuri de Silvio <https://github.com/iurisilvio>`_
 * `Hampus Stjernhav <https://github.com/champ>`_
 * `Bradley Martsberger <https://github.com/martsberger>`_
+* `Markus Bertheau <https://github.com/mbertheau>`_
+* `end0 <https://github.com/end0>`_
+* `Scott Sexton <https://github.com/scottsexton>`_
+* `Mauler <https://github.com/mauler>`_
+* `trbs <https://github.com/trbs>`_
 
 Changelog
 ---------
+
+0.5
+    - Support for Django 1.7
 
 0.4
     - Use tox to run tests.

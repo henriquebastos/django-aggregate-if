@@ -4,7 +4,15 @@ import datetime
 from decimal import Decimal
 
 from django.db.models import Q, F
-from django.test import TestCase, Approximate
+from django.test import TestCase
+
+try:
+    # Django < 1.7
+    from django.test import Approximate
+except ImportError as e:
+    # Django >= 1.7
+    from django.test.utils import Approximate
+
 
 from aggregate_if import Sum, Count, Avg, Max, Min
 
@@ -524,7 +532,7 @@ class BaseAggregateTestCase(TestCase):
         vals = Author.objects.filter(pk=1).aggregate(Count("friends__id"))
         self.assertEqual(vals, {"friends__id__count": 2})
 
-        books = Book.objects.annotate(num_authors=Count("authors__name")).filter(num_authors__ge=2).order_by("pk")
+        books = Book.objects.annotate(num_authors=Count("authors__name")).filter(num_authors=2).order_by("pk")
         self.assertQuerysetEqual(
             books, [
                 "The Definitive Guide to Django: Web Development Done Right",

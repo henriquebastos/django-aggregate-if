@@ -7,3 +7,4 @@
 .tox
 tmp/
 dist/
+.DS_Store
