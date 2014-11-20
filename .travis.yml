@@ -39,8 +39,8 @@ matrix:
       env: DJANGO=1.7 DB=mysql
 
 before_script:
-  - mysql -e 'create database aggregation;'
-  - psql -c 'create database aggregation;' -U postgres
+  - if [ "$DB" == "mysql" ]; then mysql -e 'create database aggregation;'; fi
+  - if [ "$DB" == "postgres" ]; then psql -c 'create database aggregation;' -U postgres; fi
 install:
   - pip install six
   - pip install mysql-python
