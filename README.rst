@@ -9,11 +9,11 @@ Django Aggregate If: Condition aggregates for Django
     :target: https://landscape.io/github/henriquebastos/django-aggregate-if/master
     :alt: Code Helth
 
-.. image:: https://pypip.in/v/django-aggregate-if/badge.png
+.. image:: https://img.shields.io/pypi/v/django-aggregate-if.svg
     :target: https://crate.io/packages/django-aggregate-if/
     :alt: Latest PyPI version
 
-.. image:: https://pypip.in/d/django-aggregate-if/badge.png
+.. image:: https://img.shields.io/pypi/dm/django-aggregate-if.svg
     :target: https://crate.io/packages/django-aggregate-if/
     :alt: Number of PyPI downloads
 
