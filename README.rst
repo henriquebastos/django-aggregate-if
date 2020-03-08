@@ -19,7 +19,7 @@ Django Aggregate If: Condition aggregates for Django
 
 *Aggregate-if* adds conditional aggregates to Django.
 
-Conditional aggregates can help you reduce the ammount of queries to obtain
+Conditional aggregates can help you reduce the amount of queries to obtain
 aggregated information, like statistics for example.
 
 Imagine you have a model ``Offer`` like this one:
