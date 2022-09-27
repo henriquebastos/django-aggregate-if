@@ -30,9 +30,12 @@ class SqlAggregate(DjangoSqlAggregate):
         if VERSION < (1, 7):
             super(SqlAggregate, self).relabel_aliases(change_map)
         if self.has_condition:
-            condition_change_map = dict((k, v) for k, v in \
-                change_map.items() if k in self.condition.query.alias_map
-            )
+            condition_change_map = {
+                k: v
+                for k, v in change_map.items()
+                if k in self.condition.query.alias_map
+            }
+
             self.condition.query.change_aliases(condition_change_map)
 
     def relabeled_clone(self, change_map):
